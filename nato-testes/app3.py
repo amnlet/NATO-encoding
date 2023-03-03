@@ -1,9 +1,13 @@
+import time 
+import unicodedata
+import re
+import datetime
+
 realtxt = "O que é real? Como você define o 'real'? Se \
               você está falando sobre o que você pode sentir,\
               o que você pode cheirar, o que você pode saborear e\
               ver, o real são simplesmente sinais elétricos interpretados\
               pelo seu cérebro. (filme Matrix)"
-keeper = realtxt.strip(".,()").upper()
 alfabeto_nato = {
     'A': 'Alpha',
     'B': 'Bravo',
@@ -33,13 +37,13 @@ alfabeto_nato = {
     'Z': 'Zulu'
 }
 
-
-texto = []
-texto.append(keeper)
-text_in = " "
-for palavras in texto:
-    for palavras in palavras:
-        if palavras in alfabeto_nato:
-            text_in += f"{palavras} : {alfabeto_nato[palavras]}, "
-
-print(text_in)
+agora = datetime.datetime.now() 
+for palavra in realtxt.split():
+    processamento_2 = unicodedata.normalize("NFD", palavra).encode("ascii", "ignore").decode("utf-8")
+    processamento_3 = re.sub('[^A-Za-z0-9]+', "", processamento_2)
+    caracteres = []
+    for letra in list(processamento_3):
+        caracteres.append(alfabeto_nato[letra.upper()])
+    print(f"{palavra.rjust(15)} : {caracteres}")
+milissegundos = agora.strftime("%f")[:-3]  
+print(milissegundos)
